@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/static/plugins/font-awesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="/static/plugins/bootstrap/css/awesome-bootstrap-checkbox.css"/>
+    <link href="/static/plugins/bootstrap/css/bootstrap-directional-buttons.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/backend.css"/>
+    <link rel="stylesheet" href="/static/css/commons.css"/>
+
+
+    <link rel="stylesheet" href="/static/ace/css/ace.min.css" />
+    <link rel="stylesheet" href="/static/ace/css/font-awesome.min.css" />
+
+    <style type="text/css">
+        .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+    </style>
+
+    <style>
+        .guige {
+            border-top: 1px solid #ddd;
+        }
+
+        .guige-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+
+        .guige-table .title {
+            background: #f5fafe;
+            text-align: left;
+            font-weight: bold;
+            line-height: 32px;
+            height: 32px;
+            font-family: "微软雅黑";
+            border-right: 1px solid #dcdcdc;
+            border-left: 2px solid #0488cd;
+        }
+
+        .guige-table td, .content .guige-table th {
+            border: 1px solid #dcdcdc;
+            line-height: 30px;
+            height: 30px;
+            padding: 0 10px;
+            border-top: 0;
+        }
+
+        .guige-table .body-left {
+            width: 126px;
+            font-weight: normal;
+            text-align: right;
+            color: #666;
+        }
+
+        .guige-table .body-right {
+            color: #333;
+        }
+
+    </style>
+
+    {% block css %} {% endblock %}
+
+</head>
+<body>
+<div class="pg-header">
+    {% include 'include/header_menu.html' %}
+</div>
+<div class="pg-body">
+
+    <div class="sidebar" id="sidebar">
+
+        <a class="btn btn-sm btn-success no-radius" style="width:100%;border:none" href="/"><i class="fa fa-home"></i> 返回首页</a>
+
+        <ul id="business_tree_list" class="ztree" style="overflow-y: auto; height: 864px"></ul>
+
+    </div>
+
+
+    <div class="content">
+        {% block conent %} {% endblock %}
+    </div>
+</div>
+
+<script type="text/javascript" src="/static/js/jquery-1.12.4.js"></script>
+<script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+
+{% block js %}{% endblock %}
+</body>
+</html>

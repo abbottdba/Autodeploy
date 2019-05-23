@@ -1,0 +1,47 @@
+<div class="row" style="padding: 10px 8px;">
+    <div class="col-md-6">
+
+        <!-- 应用日志地址 -->
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">服务器日志地址</h3>
+            </div>
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <th style="width: 150px;">
+                        节点名称
+                    </th>
+                    <th style="width: 150px;">
+                         环境类型
+                    </th>
+                    <th style="width: 300px;">
+                        日志地址
+                    </th>
+                    <th>
+                         备注信息
+                    </th>
+                </tr>
+                {% for logs_obj in response.all %}
+                    <tr>
+                        <td>
+                            {{ logs_obj.server_node }}
+                        </td>
+                        <td>
+                            {{ logs_obj.get_server_type_display }}
+                        </td>
+                        <td>
+                            <a href="{{ logs_obj.url }}" target="_blank">{{ logs_obj.logs_type }}</a>
+                        </td>
+                        <td>
+                            {{ logs_obj.memo }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

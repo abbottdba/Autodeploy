@@ -1,0 +1,99 @@
+{% extends 'layout/_layout_omtools.html' %}
+
+{% block css %}
+
+{% endblock %}
+
+{% block conent %}
+
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <div class='btn-group btn-group-xs'>
+            <a type="button" class="btn btn-default btn-arrow-right btn-arrow-left:before" style="color:#1c5a9c; padding-left:10px"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
+            <a type="button" class="btn btn-default btn-arrow-right" style="color:#1c5a9c;" href="#"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> OmTools</a>
+            <a type="button" class="btn btn-default btn-arrow-right" style="color:#1c5a9c;" href="{% url 'omtools-dnsmonitor-index' %}"><span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span> DNS Monitor</a>
+        </div>
+    </ol>
+
+    <div class="row" style="padding: 10px 8px 0 8px;">
+        <div class="col-md-12">
+           <div class="alert alert-success" role="alert">
+               <strong>提示！</strong>
+               <p style="padding-top: 10px">根据监测结果显示，以下域名在中国大陆地区DNS解析出现异常，为避免对用户体验造成深度影响，建议域名停止使用。</p>
+               <p style="">更多详细信息可以访问 <a href="https://www.17ce.com/" target="_blank">https://www.17ce.com/</a> 点击ping功能，对域名进行深度解析测试。</p>
+           </div>
+        </div>
+    </div>
+
+    <div class="row" style="padding: 0px 8px 0 8px;">
+        <div class="col-md-8">
+            <table class="table table-bordered table-striped">
+                <tbody>
+                <tr>
+                    <th style="">
+                         项目标识
+                    </th>
+                    <th style="">
+                         项目名称
+                    </th>
+                    <th style="">
+                         域名地址
+                    </th>
+                    <th style="">
+                         域名状态
+                    </th>
+                    <th>
+                         更新时间
+                    </th>
+                </tr>
+                {% for monitor_obj in response.all %}
+                    <tr>
+                        <td nowrap="nowrap">
+                            {{ monitor_obj.project_id.name }}
+                        </td>
+                        <td nowrap="nowrap">
+                            {{ monitor_obj.project_id.cn_name }}
+                        </td>
+                        <td nowrap="nowrap">
+                            {{ monitor_obj.domain }}
+                        </td>
+                        <td nowrap="nowrap">
+                            {% if monitor_obj.status %}
+                                <button type="button" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 正常</button>
+                            {% else %}
+                                <button type="button" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 异常</button>
+                            {% endif %}
+                        </td>
+                        <td nowrap="nowrap">
+                            {{ monitor_obj.update_date | date:"Y-m-d H:i:s" }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-4">
+            <div class="alert alert-info" role="alert">
+                <strong>各产品异常域名统计</strong><br><br>
+                {% for count_obj in domain_count.all %}
+                    {{ count_obj.project_id__cn_name }}/{{ count_obj.project_id__name }} ({{ count_obj.domain__count }}) <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/cores.js"></script>
+
+    <script>
+        $(function () {
+            $.initMenu('#menu_omtools_dnsmonitor');
+
+        });
+
+    </script>
+{% endblock %}

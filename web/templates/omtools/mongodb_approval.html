@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MongoDB任务审批</title>
+</head>
+<body>
+
+任务ID：{{ response.data.id }} </br>
+任务标题：{{ response.data.title }} </br>
+执行语句：{{ response.data.op_exec }} </br>
+提交时间：{{ response.data.date | date:"Y-m-d H:i:s" }} </br></br>
+
+<form method='post' action={% url 'omtools-mongodb-approval' %}>
+    <input type="hidden" name="id" value="{{ response.data.approval_md5 }}">
+    {% if  response.data.approved %}
+        <input type="submit" disabled value="任务批准成功">
+    {% else %}
+        <input type="submit" value="批准执行">
+    {% endif %}
+</form>
+
+</body>
+</html>

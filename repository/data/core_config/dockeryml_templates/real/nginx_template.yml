@@ -1,0 +1,26 @@
+version: '2'
+
+services:
+    {app_name}:
+        image: omhub.neweb.me:5000/{app_name}
+        container_name: {app_name}
+        cap_add:
+            - LINUX_IMMUTABLE
+        ports:
+            - "{host_port}:{container_port}"
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /opt/container-logs/{app_name}/:/var/log/nginx
+        hostname: {app_name}
+        restart: always
+        environment:
+            - LANG=zh_CN.UTF-8
+        command: nginx -g 'daemon off;'
+        mem_limit: 4g
+        memswap_limit: 4g
+        stdin_open: true
+        tty: true
+        dns:
+            - 10.168.11.100
+            - 10.167.11.100
+        network_mode: "host"

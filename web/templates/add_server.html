@@ -1,0 +1,158 @@
+{% extends 'layout/_layout.html' %}
+
+{% block css %}
+
+
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <div class='btn-group btn-group-xs'>
+            <a type="button" class="btn btn-default btn-arrow-right btn-arrow-left:before" style="color:#1c5a9c; padding-left:10px"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
+            <a type="button" class="btn btn-default btn-arrow-right" style="color:#1c5a9c;" href="/server.html"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Application</a>
+            <a type="button" class="btn btn-default btn-arrow-right" style="color:#1c5a9c;" href="#"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Create App</a>
+        </div>
+    </ol>
+    <div class="row" style="margin: 0">
+        <div class="col-sm-8" style="padding: 20px 8px;">
+
+            <form class="form-horizontal" id="add_server_form" role="form" action="servers.html" method="post">
+
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="line-height:34px; width:180px" align="right">App Name : *</td>
+                        <td>
+                            <input type="text" class="form-control" name="name" placeholder="Enter app name...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Parent Project : *</td>
+                        <td>
+                            <select class="form-control" name="project_id_id">
+                                {% for obj in response.data %}
+                                    <option value="{{ obj.id }}">{{ obj.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Docker Type : *</td>
+                        <td>
+                            <select class="form-control" name="app_type">
+                                <option value="nginx">Nginx</option>
+                                <option value="tomcat">Tomcat</option>
+                                <option value="php">PHP</option>
+                                <option value="python">Python</option>
+                                <option value="worker">Worker</option>
+                                <option value="static">Static</option>
+                                <option value="nodejs">NodeJS</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Image Version : *</td>
+                        <td>
+                            <select class="form-control" name="app_type" disabled>
+                                <option value="">None</option>
+                                <option value="1.4.5">1.4.5</option>
+                                <option value="1.4.6">1.4.6</option>
+                                <option value="1.4.7">1.4.7</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Git Name : *</td>
+                        <td>
+                            <input type="text" class="form-control" name="git_name" placeholder="Enter git Name...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Git Branch : *</td>
+                        <td>
+                            <input type="text" class="form-control" name="git_branch" placeholder="Enter git branch...">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Git Dir Name : *</td>
+                        <td>
+                            <input type="text" class="form-control" name="git_path" placeholder="Default Path /">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">CSTest Port : *</td>
+                        <td>
+                            <input type="text" class="form-control" name="cstest_port" placeholder="CSTest Server Port">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <a type="submit" class="btn btn-primary" onclick="add_server_fn()"><i class="fa fa-check"></i> Create Application</a>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+        <div class="col-sm-4" style="padding: 20px 8px;">
+
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Environment Info</h3>
+                </div>
+                <div class="panel-body">
+                    CsTest Server
+                    <ul>
+                        <li>10.167.11.118</li>
+                    </ul>
+                    Docker Images Server
+                    <ul>
+                        <li>10.168.11.104</li>
+                    </ul>
+                    HA Server
+                    <ul>
+                        <li>10.168.11.104</li>
+                        <li>10.168.11.104</li>
+                        <li>10.168.11.104</li>
+                        <li>10.168.11.104</li>
+                    </ul>
+                    Docker Server
+                    <ul>
+                        <li>10.168.11.104</li>
+                        <li>10.168.11.104</li>
+                        <li>10.168.11.104</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/cores.js"></script>
+
+    <script>
+        $(function () {
+            $.initMenu('#menu_server');
+        });
+
+        function add_server_fn() {
+            if ($('input[name="name"]').val().length == 0) {
+                alert("Please add app name.");
+                return false;
+            }
+            $("#add_server_form").submit()
+        }
+
+    </script>
+{% endblock %}

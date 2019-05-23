@@ -1,0 +1,220 @@
+{% extends 'layout/_layout.html' %}
+
+{% block css %}
+
+    <link rel="stylesheet" href="/static/plugins/ztree/css/metroStyle/metroStyle.css" type="text/css">
+
+    <style type="text/css">
+        .ztree li span.button.add {margin-left:2px; margin-right: -1px; background-position:-144px 0; vertical-align:top; *vertical-align:middle}
+    </style>
+
+{% endblock %}
+
+{% block conent %}
+    <ol class="breadcrumb" style="margin-bottom: 0;">
+        <div class='btn-group btn-group-xs'>
+            <a type="button" class="btn btn-default btn-arrow-right btn-arrow-left:before" style="color:#1c5a9c; padding-left:10px"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> Dashboard</a>
+            <a type="button" class="btn btn-default btn-arrow-right" style="color:#1c5a9c;" href={% url 'cmdb-asset-apply' %}><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Create Apply</a>
+        </div>
+    </ol>
+
+    <div class="row" style="margin:0">
+        <div class="col-sm-3" style="padding-top: 20px;">
+
+            <form class="form-horizontal" id="add_server_form" role="form" action="servers.html" method="post">
+
+                <table class="table table-bordered table-striped">
+                    <tbody>
+                    <tr>
+                        <td style="width:150px;line-height:34px;" align="right">Title :</td>
+                        <td>
+                            <input type="text" class="form-control" name="title" placeholder="Enter Apply Title">
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Business:</td>
+                        <td>
+                            <div class="btn-group btn-group-justified" role="group" aria-label="..." style="display: block">
+                                <div id="business_tree_btn" class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align:left;" onclick="load_tree_data()"><span id="business_select_text">Select Business Unit</span> <span class="caret"></span></button>
+                                    <ul class="dropdown-menu model-group-list" style="height: 350px; overflow-y: auto;">
+                                        <div class="content_wrap">
+                                            <div class="zTreeDemoBackground left">
+                                                <ul id="treeDemo" class="ztree"></ul>
+                                            </div>
+                                        </div>
+                                    </ul>
+                                </div>
+                            </div>
+                            <input type="hidden" name="business_unit_id">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">IDC:</td>
+                        <td>
+                            <select class="form-control" name="idc">
+                                {% for obj in idc_list %}
+                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">OS Type:</td>
+                        <td>
+                            <select class="form-control" name="os_type">
+                                <option value="Linux">Linux</option>
+                                <option value="Windows">Windows</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="line-height:34px;" align="right">Creator:</td>
+                        <td>
+                            <select class="form-control" name="creator">
+                                {% for obj in asset_creator %}
+                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="info">
+                        <td style="line-height:34px;" align="right">Option:</td>
+                        <td>
+                            <div class="form-inline" align="center">
+{#                                <button type="button" class="btn btn-default" onclick="window.history.go(-1)"><i class="fa fa-mail-reply"></i> Back</button>#}
+                                <a class="btn btn-primary" type="button" style="width:100%" onclick="cmdb_asset_apply_fn()"><i class="fa fa-check"></i> Submit My Apply</a>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </form>
+
+        </div>
+
+        <div class="col-sm-9" style="padding-top: 20px; padding-left:10px;">
+
+            <div class="panel panel-info">
+                <!-- Default panel contents -->
+                <div class="panel-heading">Apply Server List</div>
+
+                <!-- Table -->
+                <table class="table">
+                    <div class="list-block" style="margin: 8px">
+                        <div class="clearfix search-area" style="border: 0px solid #ddd">
+
+                            <div id="config_conditions">
+
+                                <div class="condition">
+                                    <div class="icons">
+                                        <a class="btn btn-default no-radius" onclick="$.AddSearchCondition(this)"><i
+                                                class="fa fa-plus-square"></i></a>
+                                    </div>
+
+                                    <div class="inputs">
+                                        <div class="input-group">
+
+                                            <span class="input-group-addon">CPU</span>
+                                            <select class="form-control" name="cpu">
+                                                <option value="1">1C</option>
+                                                <option value="2">2C</option>
+                                                <option value="3">3C</option>
+                                                <option value="4">4C</option>
+                                                <option value="5">5C</option>
+                                                <option value="6">6C</option>
+                                                <option value="7">7C</option>
+                                                <option value="8">8C</option>
+                                                <option value="8">12C</option>
+                                                <option value="8">16C</option>
+                                            </select>
+
+                                            <span class="input-group-addon">Mem</span>
+                                            <select class="form-control" name="mem">
+                                                <option value="1">1G</option>
+                                                <option value="2">2G</option>
+                                                <option value="3">3G</option>
+                                                <option value="4">4G</option>
+                                                <option value="5">5G</option>
+                                                <option value="6">6G</option>
+                                                <option value="7">7G</option>
+                                                <option value="8">8G</option>
+                                                <option value="8">12G</option>
+                                                <option value="8">16G</option>
+                                            </select>
+
+                                            <span class="input-group-addon">Disk</span>
+                                            <select class="form-control" name="disk">
+                                                <option value="5">5G</option>
+                                                <option value="10">10G</option>
+                                                <option value="20">20G</option>
+                                                <option value="30">30G</option>
+                                                <option value="40">40G</option>
+                                                <option value="50">50G</option>
+                                                <option value="60">60G</option>
+                                                <option value="70">70G</option>
+                                                <option value="80">80G</option>
+                                                <option value="100">100G</option>
+                                                <option value="120">120G</option>
+                                                <option value="150">150G</option>
+                                                <option value="200">200G</option>
+                                                <option value="250">250G</option>
+                                                <option value="300">300G</option>
+                                                <option value="400">400G</option>
+                                                <option value="500">500G</option>
+                                            </select>
+
+                                            <span class="input-group-addon">Function</span>
+                                            <select class="form-control" name="function">
+                                                {% for obj in function_list %}
+                                                    <option value="{{ obj.name }}">{{ obj.name }}</option>
+                                                {% endfor %}
+                                            </select>
+
+                                            <span class="input-group-addon">Memo</span>
+                                            <input type="text" class="form-control col-xs-4" name="memo" placeholder="Memo" size="18">
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </table>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script type="text/javascript" src="/static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="/static/plugins/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/js/cores.js"></script>
+
+    <script type="text/javascript" src="/static/plugins/ztree/js/jquery.ztree.core.js"></script>
+	<script type="text/javascript" src="/static/plugins/ztree/js/jquery.ztree.excheck.js"></script>
+	<script type="text/javascript" src="/static/plugins/ztree/js/jquery.ztree.exedit.js"></script>
+
+    <script type="text/javascript" src="/static/js/cmdb/cmdb-asset-apply.js"></script>
+
+    <script>
+        $(function () {
+            $.initMenu('#menu_cmdb_server_list');
+        });
+
+    </script>
+{% endblock %}
